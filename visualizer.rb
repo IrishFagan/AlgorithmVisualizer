@@ -1,6 +1,13 @@
 require 'ruby2d'
 
 set width: 500, height: 500
+goal = [22,3]
+
+def findDistance(x,y)
+	x = x - goal[0]
+	y = y - goal[1]
+	heur = x.abs+y.abs
+	return heur
 
 def newSquare(x,y,clr)
 	sqr = Square.new
@@ -11,7 +18,6 @@ def newSquare(x,y,clr)
 end
 
 def goalCheck(x,y)
-	goal = [22,3]
 	if goal == [x,y]
 		return true
 	end
@@ -26,6 +32,7 @@ def drawSquares()
 		while j <= 25
 			c = j*0.04
 			clr = [c,c,c,1]
+			heur = findDistance(i,j)
 			newSquare(i,j,clr)
 			if goalCheck(i,j)
 				clr = [0,0.8,0.2,1]
