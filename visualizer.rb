@@ -55,6 +55,17 @@ def drawSquares()
 	end
 end
 
+def aStar()
+	opened = []
+	closed = []
+	goal = [16,9]
+	start = [3,22]
+	opened.push(start)
+
+	while opened.length > 0
+	end
+end
+
 on :key_up do |event|
 	exit
 end
