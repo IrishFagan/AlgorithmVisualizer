@@ -21,15 +21,8 @@ def newSquare(x,y,clr)
 	sqr.color = clr
 end
 
-def goalCheck(x,y,goal)
-	if goal == [x,y]
-		return true
-	end
-	return false
-end
-
-def startCheck(x,y,start)
-	if start == [x,y]
+def specificBlock(x,y,block)
+	if block == [x,y]
 		return true
 	end
 	return false
@@ -62,11 +55,11 @@ def drawSquares()
 			clr = [c,c,c,1]
 			#clr = [0.5,0.1,c,1]
 			newSquare(i,j,clr)
-			if goalCheck(i,j,goal)
+			if specificBlock(i,j,goal)
 				clr = [0,0.8,0.2,1]
 				newSquare(i,j,clr)
 			end
-			if startCheck(i,j,start)
+			if specificBlock(i,j,start)
 				clr = [1,0.4,0.3,1]
 				newSquare(i,j,clr)
 			end
