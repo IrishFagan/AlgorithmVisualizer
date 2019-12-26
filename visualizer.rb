@@ -1,6 +1,6 @@
 require 'ruby2d'
 
-set width: 500, height: 600
+set width: 500, height: 500
 
 def findDistance(x,y,goal)
 	x = x - goal[0]
@@ -28,28 +28,13 @@ def specificBlock(x,y,block)
 	return false
 end
 
-def drawTitle()
-	rect = Rectangle.new
-	rect.x = 0
-	rect.y = 0
-	rect.width = 500
-	rect.height = 100
-	rect.color = [0,0,0,1]
-	Text.new(
-		'ALGORITHM VISUALIZER',
-		x: 40, y: 30,
-		size: 35,
-		color: 'white'
-	)
-end
-
 def drawSquares()
 	i = 0
-	j = 5
+	j = 0
 	goal = [16,9]
-	start = [3,25]
-	while i <= 30
-		while j <= 30
+	start = [3,22]
+	while i <= 25
+		while j <= 25
 			heur = findDistance(i,j,goal)
 			c = detColor(heur)
 			clr = [c,c,c,1]
@@ -65,7 +50,7 @@ def drawSquares()
 			end
 			j += 1
 		end
-		j = 5
+		j = 0
 		i += 1
 	end
 end
@@ -74,6 +59,5 @@ on :key_up do |event|
 	exit
 end
 
-drawTitle()
 drawSquares()
 show
