@@ -64,9 +64,18 @@ end
 class Node
 	def initialize(coord, g_score, h_score, f_score)
 		@coord = coord
-		@f = f_score
-		@h = h_score
 		@g = g_score
+		@h = h_score
+		@f = f_score
+	end
+	def f_score
+		@f
+	end
+	def h_score
+		@h
+	end
+	def g_score
+		@g
 	end
 end
 
