@@ -67,7 +67,6 @@ def drawSquares()
 				newSquare(i,j,clr)
 			end
 			if startCheck(i,j,start)
-				puts "dog"
 				clr = [1,0.4,0.3,1]
 				newSquare(i,j,clr)
 			end
