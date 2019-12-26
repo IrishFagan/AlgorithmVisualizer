@@ -9,6 +9,13 @@ def findDistance(x,y,coord)
 	return heur
 end
 
+def getScores(crnt,goal,start,move)
+	g = findDistance(crnt[0],crnt[1],start) + move[0] + move[1]
+	h = findDistance(crnt[0],crnt[1],goal)
+	f = g + h
+	return [f,g,h]
+end
+
 def detColor(h)
 	return h*0.03
 end
@@ -38,7 +45,6 @@ def drawSquares()
 			heur = findDistance(i,j,goal)
 			c = detColor(heur)
 			clr = [c,c,c,1]
-			#clr = [0.5,0.1,c,1]
 			newSquare(i,j,clr)
 			if specificBlock(i,j,goal)
 				clr = [0,0.8,0.2,1]
@@ -56,7 +62,7 @@ def drawSquares()
 end
 
 class Node
-	def initialize(coord, f_score, h_score, g_score)
+	def initialize(coord, g_score, h_score, f_score)
 		@coord = coord
 		@f = f_score
 		@h = h_score
@@ -69,15 +75,17 @@ def aStar()
 	closed = []
 	goal = [16,9]
 	start = [3,22]
-	opened.push(start)
-
-	while opened.length > 0
-	end
+	arr = getScores(start, goal, start, 0)
+	s = Node.new(start,arr[0],arr[1],arr[2])
+	opened.push(s)
+	#while opened.length > 0
+	#end
 end
 
 on :key_up do |event|
 	exit
 end
 
+aStar()
 drawSquares()
 show
