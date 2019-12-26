@@ -2,9 +2,9 @@ require 'ruby2d'
 
 set width: 500, height: 500
 
-def findDistance(x,y,goal)
-	x = x - goal[0]
-	y = y - goal[1]
+def findDistance(x,y,coord)
+	x = x - coord[0]
+	y = y - coord[1]
 	heur = x.abs+y.abs
 	return heur
 end
