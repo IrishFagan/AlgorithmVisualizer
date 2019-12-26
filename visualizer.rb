@@ -51,5 +51,9 @@ def drawSquares()
 	end
 end
 
+on :key_up do |event|
+	exit
+end
+
 drawSquares()
 show
