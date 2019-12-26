@@ -55,6 +55,15 @@ def drawSquares()
 	end
 end
 
+class Node
+	def initialize(coord, f_score, h_score, g_score)
+		@coord = coord
+		@f = f_score
+		@h = h_score
+		@g = g_score
+	end
+end
+
 def aStar()
 	opened = []
 	closed = []
