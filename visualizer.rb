@@ -1,7 +1,6 @@
 require 'ruby2d'
 
 set width: 500, height: 500
-goal = [22,3]
 
 def findDistance(x,y,goal)
 	x = x - goal[0]
@@ -32,7 +31,7 @@ end
 def drawSquares()
 	i = 0
 	j = 0
-	goal = [22,3]
+	goal = [16,9]
 	start = [0,0]
 	while i <= 25
 		while j <= 25
