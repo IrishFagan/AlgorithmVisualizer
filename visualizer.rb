@@ -16,6 +16,11 @@ def getScores(crnt,goal,start,move)
 	return [f,g,h]
 end
 
+def newNode(coord,start,goal,move)
+	arr = getScores(coord, goal, start, 0)
+	return Node.new(start,arr[0],arr[1],arr[2])
+end
+
 def detColor(h)
 	return h*0.03
 end
@@ -84,11 +89,11 @@ def aStar()
 	closed = []
 	goal = [16,9]
 	start = [3,22]
-	arr = getScores(start, goal, start, 0)
-	s = Node.new(start,arr[0],arr[1],arr[2])
+	s = newNode(start,start,goal,0)
 	opened.push(s)
 	#while opened.length > 0
 	#end
+	puts s.f_score
 end
 
 on :key_up do |event|
