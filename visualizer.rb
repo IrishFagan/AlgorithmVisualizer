@@ -69,6 +69,7 @@ def drawSquares()
 		j = 0
 		i += 1
 	end
+	aStar(goal,start)
 end
 
 class Node
@@ -92,12 +93,10 @@ class Node
 	end
 end
 
-def aStar()
+def aStar(goal,start)
 	opened = []
 	closed = []
 	moves = [[0,1],[-1,0],[0,-1],[1,0]]
-	goal = [16,9]
-	start = [3,22]
 	opened.push(newNode(start,start,goal,0))
 	while opened.length > 0
 		current = findMinScore(opened,"f_score")
@@ -114,6 +113,5 @@ on :key_up do |event|
 	exit
 end
 
-aStar()
 drawSquares()
 show
