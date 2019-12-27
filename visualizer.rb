@@ -28,6 +28,10 @@ def newCoord(coord,move)
 	return result
 end
 
+def foundBarrier(coord,move)
+	check = newCoord(coord,move)
+end
+
 def newNode(coord,start,goal,move)
 	arr = getScores(coord, goal, start, move)
 	coord = newCoord(coord,move)
@@ -119,6 +123,11 @@ def aStar(goal,start)
 		while i <= 3
 			puts "index "+i.to_s+": "+moves[i].to_s
 			child = newNode(current.coord,start,goal,moves[i])
+			#if foundBarrier(child.coord,moves[i])
+			#	closed.push(child)
+			#	i += 1
+			#	next
+			#end
 			if closed.any?{|a| a.coord == current.coord}
 				puts "MATCH"
 				i += 1
