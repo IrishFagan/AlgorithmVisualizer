@@ -10,7 +10,7 @@ def findDistance(x,y,coord)
 end
 
 def findMinScore(arr)
-	arr.sort! { |a,b| a.f_score <=> b.f_score}
+	arr.sort! { |a,b| a.h_score <=> b.h_score}
 	return arr[0]
 end
 
@@ -18,7 +18,7 @@ def getScores(crnt,goal,start,move)
 	g = findDistance(crnt[0],crnt[1],start) + move[0] + move[1]
 	h = findDistance(crnt[0],crnt[1],goal)
 	f = g + h
-	return [f,g,h]
+	return [g,h,f]
 end
 
 def newCoord(coord,move)
@@ -28,9 +28,13 @@ def newCoord(coord,move)
 	return result
 end
 
+def trackPath(current, count)
+	newSquare(current.coord[0],current.coord[1],[0.2,0.4,0.2,1])
+	Text.new(count+1,x:current.coord[0]*20,y:+current.coord[1]*20,size: 11)
+end
+
 def foundBarrier(coord,border)
 	if border.include? coord
-		puts "COLLISSION: "+coord.to_s
 		return true
 	end
 	if coord[0] == -1
@@ -39,19 +43,19 @@ def foundBarrier(coord,border)
 	if coord[1] == -1
 		return true
 	end
-	if coord[0] > 25
+	if coord[0] > 24
 		return true
 	end
-	if coord[1] > 25
+	if coord[1] > 24
 		return true
 	end
 	return false
 end
 
-def newNode(coord,start,goal,move)
+def newNode(coord,start,goal,move,parent)
 	arr = getScores(coord, goal, start, move)
 	coord = newCoord(coord,move)
-	return Node.new(coord,arr[0],arr[1],arr[2])
+	return Node.new(coord,arr[0],arr[1],arr[2],parent)
 end
 
 def detColor(h)
@@ -77,9 +81,9 @@ def drawSquares()
 	i = 0
 	j = 0
 	k = 0
-	goal = [0,0]
-	start = [22,8]
-	border = [[5,5],[6,5],[7,5],[8,5],[9,5],[5,0],[5,1],[5,2],[5,3],[5,4]]
+	goal = [10,3]
+	start = [19,22]
+	border = [[10,13],[10,14],[10,15],[15,12],[16,12],[17,12],[18,12],[19,12],[14,12],[13,12],[12,12],[11,12],[10,12]]
 	while i <= 25
 		while j <= 25
 			if border.include? [i,j]
@@ -113,11 +117,12 @@ def drawSquares()
 end
 
 class Node
-	def initialize(coord, g_score, h_score, f_score)
+	def initialize(coord, g_score, h_score, f_score, parent)
 		@coord = coord
 		@g = g_score
 		@h = h_score
 		@f = f_score
+		@p = parent
 	end
 	def coord
 		@coord
@@ -131,25 +136,42 @@ class Node
 	def g_score
 		@g
 	end
+	def parent
+		@p
+	end
 end
 
 def aStar(goal,start,border)
 	opened = []
 	closed = []
 	moves = [[0,1],[-1,0],[0,-1],[1,0]]
-	opened.push(newNode(start,start,goal,[0,0]))
+	opened.push(newNode(start,start,goal,[0,0],nil))
+	count = 0
 	while opened.length > 0
 		current = findMinScore(opened)
-		newSquare(current.coord[0],current.coord[1],[0.2,0.4,0.2,1])
-		puts
-		puts "Current: ["+current.coord[0].to_s+","+current.coord[1].to_s+"]"
+		opened.delete(current)
+		closed.push(current)
 		if current.coord == goal
-			puts "FOUND!"
+			path = []
+			current_node = current
+			i = 0
+			while current_node.coord != start
+				path.push(current_node)
+				current_node = current_node.parent
+				i += 1
+			end
+			path = path.reverse
+			i = 0
+			while i < path.length
+				puts "Move #"+(i+1).to_s+": ["+path[i].coord[0].to_s+","+path[i].coord[1].to_s+"]"
+				trackPath(path[i], i)
+				i += 1
+			end
 			return
 		end
 		i = 0
 		while i <= 3
-			child = newNode(current.coord,start,goal,moves[i])
+			child = newNode(current.coord,start,goal,moves[i],current)
 			if foundBarrier(child.coord,border)
 				closed.push(child)
 				i += 1
@@ -161,23 +183,17 @@ def aStar(goal,start,border)
 			end
 			if opened.any?{|a| a.coord == child.coord}
 				gIndex = opened.find_index{|b| b.coord == child.coord}
-				print "IndexCoord: "+gIndex.to_s
-				puts
 				if child.g_score > opened[gIndex].g_score
 					i += 1
 					next
 				end
 			end
-			puts "Child: ["+child.coord[0].to_s+","+child.coord[1].to_s+"], Move: "+moves[i].to_s
 			opened.push(child)
 			i += 1
 		end
-		opened.delete(current)
-		closed.push(current)
 	end
 	l = 0
 	while l < closed.length
-		puts "Closed: ["+closed[l].coord[0].to_s+","+closed[l].coord[1].to_s+"]"
 		l += 1
 	end
 end
