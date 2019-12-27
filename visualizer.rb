@@ -95,11 +95,16 @@ end
 def aStar()
 	opened = []
 	closed = []
+	moves = [[0,1],[-1,0],[0,-1],[1,0]]
 	goal = [16,9]
 	start = [3,22]
 	opened.push(newNode(start,start,goal,0))
 	while opened.length > 0
 		current = findMinScore(opened,"f_score")
+		if current.coord == goal
+			puts "FOUND!"
+			return
+		end
 		opened.delete(current)
 		closed.push(current)
 	end
