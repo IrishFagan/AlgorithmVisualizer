@@ -11,7 +11,7 @@ end
 
 def findMinScore(arr,score)
 	arr.sort! { |a,b| a.score <=> b.score}
-	return opened[0]
+	return arr[0]
 end
 
 def getScores(crnt,goal,start,move)
@@ -97,11 +97,12 @@ def aStar()
 	closed = []
 	goal = [16,9]
 	start = [3,22]
-	s = newNode(start,start,goal,0)
-	opened.push(s)
-	#while opened.length > 0
-		#min = findMinScore(opened,f_score)
-	#end
+	opened.push(newNode(start,start,goal,0))
+	while opened.length > 0
+		current = findMinScore(opened,"f_score")
+		opened.delete(current)
+		closed.push(current)
+	end
 end
 
 on :key_up do |event|
