@@ -1,6 +1,7 @@
 require 'ruby2d'
 
 set width: 500, height: 500
+$border = []
 
 def findDistance(x,y,coord)
 	x = x - coord[0]
@@ -77,21 +78,29 @@ def specificBlock(x,y,block)
 	return false
 end
 
+def drawBorder(x,y)
+	x = x[0..x.length-2]
+	y = y[0..y.length-2]
+	if x.to_i.odd?
+		x = x.to_i - 1
+	end
+	if y.to_i.odd?
+		y = y.to_i - 1
+	end
+	x = x.to_i/2
+	y = y.to_i/2
+	$border.push([x,y])
+	drawSquares()
+end
+
 def drawSquares()
 	i = 0
 	j = 0
 	k = 0
 	goal = [10,3]
-	start = [19,22]
-	border = [[10,13],[10,14],[10,15],[15,12],[16,12],[17,12],[18,12],[19,12],[14,12],[13,12],[12,12],[11,12],[10,12]]
+	start = [19,17]
 	while i <= 25
 		while j <= 25
-			if border.include? [i,j]
-				clr = [0.5,0.8,0.1,1]
-				newSquare(i,j,clr)
-				j += 1
-				next
-			end
 			if specificBlock(i,j,goal)
 				clr = [0.4,0.8,0.2,1]
 				newSquare(i,j,clr)
@@ -113,7 +122,7 @@ def drawSquares()
 		j = 0
 		i += 1
 	end
-	aStar(goal,start,border)
+	aStar(goal,start,$border)
 end
 
 class Node
@@ -142,6 +151,11 @@ class Node
 end
 
 def aStar(goal,start,border)
+	i = 0
+	while i < border.length
+		newSquare(border[i][0],border[i][1],[0.4,0.2,0.8,1])
+		i += 1
+	end
 	opened = []
 	closed = []
 	moves = [[0,1],[-1,0],[0,-1],[1,0]]
@@ -163,7 +177,6 @@ def aStar(goal,start,border)
 			path = path.reverse
 			i = 0
 			while i < path.length
-				puts "Move #"+(i+1).to_s+": ["+path[i].coord[0].to_s+","+path[i].coord[1].to_s+"]"
 				trackPath(path[i], i)
 				i += 1
 			end
@@ -192,9 +205,14 @@ def aStar(goal,start,border)
 			i += 1
 		end
 	end
-	l = 0
-	while l < closed.length
-		l += 1
+end
+
+on :mouse_down do |event|
+	case event.button
+	when :left
+		x = event.x.to_s
+		y = event.y.to_s
+		drawBorder(x,y)
 	end
 end
 
