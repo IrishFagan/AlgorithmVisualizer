@@ -62,20 +62,25 @@ def drawSquares()
 	j = 0
 	goal = [0,0]
 	start = [24,7]
+	border = [[5,5],[6,5],[7,5],[8,5],[9,5]]
 	while i <= 25
 		while j <= 25
-			heur = findDistance(i,j,goal)
-			c = detColor(heur)
-			clr = [c,c,c,1]
-			newSquare(i,j,clr)
 			if specificBlock(i,j,goal)
 				clr = [0,0.8,0.2,1]
 				newSquare(i,j,clr)
+				j += 1
+				next
 			end
 			if specificBlock(i,j,start)
 				clr = [1,0.4,0.3,1]
 				newSquare(i,j,clr)
+				j += 1
+				next
 			end
+			heur = findDistance(i,j,goal)
+			c = detColor(heur)
+			clr = [c,c,c,1]
+			newSquare(i,j,clr)
 			j += 1
 		end
 		j = 0
