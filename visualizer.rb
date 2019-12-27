@@ -9,8 +9,8 @@ def findDistance(x,y,coord)
 	return heur
 end
 
-def findMinScore(arr,score)
-	arr.sort! { |a,b| a.score <=> b.score}
+def findMinScore(arr)
+	arr.sort! { |a,b| a.f_score <=> b.f_score}
 	return arr[0]
 end
 
@@ -22,7 +22,7 @@ def getScores(crnt,goal,start,move)
 end
 
 def newNode(coord,start,goal,move)
-	arr = getScores(coord, goal, start, 0)
+	arr = getScores(coord, goal, start, move)
 	return Node.new(coord,arr[0],arr[1],arr[2])
 end
 
@@ -99,10 +99,29 @@ def aStar(goal,start)
 	moves = [[0,1],[-1,0],[0,-1],[1,0]]
 	opened.push(newNode(start,start,goal,0))
 	while opened.length > 0
-		current = findMinScore(opened,"f_score")
+		current = findMinScore(opened)
 		if current.coord == goal
 			puts "FOUND!"
 			return
+		end
+		i = 0
+		while i <= 3
+			puts "index "+i.to_s+": "+moves[i].to_s
+			child = newNode(current.coord,start,goal,moves[i])
+			if closed.any?{|a| a.coord == current.coord}
+				i += 1
+				next
+			end
+			if opened.any?{|a| a.coord == current.coord}
+				gIndex = opened.find_index{|b| b.coord == current.coord}
+				puts gIndex
+				if child.g_score > opened[gIndex].g_score
+					i += 1
+					next
+				end
+			end
+			opened.push(child)
+			i += 1
 		end
 		opened.delete(current)
 		closed.push(current)
