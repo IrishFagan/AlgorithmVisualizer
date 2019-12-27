@@ -28,8 +28,24 @@ def newCoord(coord,move)
 	return result
 end
 
-def foundBarrier(coord,move)
-	check = newCoord(coord,move)
+def foundBarrier(coord,border)
+	if border.include? coord
+		puts "COLLISSION: "+coord.to_s
+		return true
+	end
+	if coord[0] == -1
+		return true
+	end
+	if coord[1] == -1
+		return true
+	end
+	if coord[0] > 25
+		return true
+	end
+	if coord[1] > 25
+		return true
+	end
+	return false
 end
 
 def newNode(coord,start,goal,move)
@@ -62,8 +78,8 @@ def drawSquares()
 	j = 0
 	k = 0
 	goal = [0,0]
-	start = [24,7]
-	border = [[5,5],[6,5],[7,5],[8,5],[9,5]]
+	start = [22,8]
+	border = [[5,5],[6,5],[7,5],[8,5],[9,5],[5,0],[5,1],[5,2],[5,3],[5,4]]
 	while i <= 25
 		while j <= 25
 			if border.include? [i,j]
@@ -73,7 +89,7 @@ def drawSquares()
 				next
 			end
 			if specificBlock(i,j,goal)
-				clr = [0,0.8,0.2,1]
+				clr = [0.4,0.8,0.2,1]
 				newSquare(i,j,clr)
 				j += 1
 				next
@@ -93,7 +109,7 @@ def drawSquares()
 		j = 0
 		i += 1
 	end
-	aStar(goal,start)
+	aStar(goal,start,border)
 end
 
 class Node
@@ -117,7 +133,7 @@ class Node
 	end
 end
 
-def aStar(goal,start)
+def aStar(goal,start,border)
 	opened = []
 	closed = []
 	moves = [[0,1],[-1,0],[0,-1],[1,0]]
@@ -133,15 +149,13 @@ def aStar(goal,start)
 		end
 		i = 0
 		while i <= 3
-			puts "index "+i.to_s+": "+moves[i].to_s
 			child = newNode(current.coord,start,goal,moves[i])
-			#if foundBarrier(child.coord,moves[i])
-			#	closed.push(child)
-			#	i += 1
-			#	next
-			#end
-			if closed.any?{|a| a.coord == current.coord}
-				puts "MATCH"
+			if foundBarrier(child.coord,border)
+				closed.push(child)
+				i += 1
+				next
+			end
+			if closed.any?{|a| a.coord == child.coord}
 				i += 1
 				next
 			end
@@ -154,7 +168,7 @@ def aStar(goal,start)
 					next
 				end
 			end
-			puts "Child: ["+child.coord[0].to_s+","+child.coord[1].to_s+"]"
+			puts "Child: ["+child.coord[0].to_s+","+child.coord[1].to_s+"], Move: "+moves[i].to_s
 			opened.push(child)
 			i += 1
 		end
@@ -163,7 +177,7 @@ def aStar(goal,start)
 	end
 	l = 0
 	while l < closed.length
-		puts "Closed: ["+closed[i].coord[0].to_s+","+closed[i].coord[1].to_s+"]"
+		puts "Closed: ["+closed[l].coord[0].to_s+","+closed[l].coord[1].to_s+"]"
 		l += 1
 	end
 end
