@@ -9,6 +9,11 @@ def findDistance(x,y,coord)
 	return heur
 end
 
+def findMinScore(arr,score)
+	arr.sort! { |a,b| a.score <=> b.score}
+	return opened[0]
+end
+
 def getScores(crnt,goal,start,move)
 	g = findDistance(crnt[0],crnt[1],start) + move[0] + move[1]
 	h = findDistance(crnt[0],crnt[1],goal)
@@ -18,7 +23,7 @@ end
 
 def newNode(coord,start,goal,move)
 	arr = getScores(coord, goal, start, 0)
-	return Node.new(start,arr[0],arr[1],arr[2])
+	return Node.new(coord,arr[0],arr[1],arr[2])
 end
 
 def detColor(h)
@@ -73,6 +78,9 @@ class Node
 		@h = h_score
 		@f = f_score
 	end
+	def coord
+		@coord
+	end
 	def f_score
 		@f
 	end
@@ -92,8 +100,8 @@ def aStar()
 	s = newNode(start,start,goal,0)
 	opened.push(s)
 	#while opened.length > 0
+		#min = findMinScore(opened,f_score)
 	#end
-	puts s.f_score
 end
 
 on :key_up do |event|
