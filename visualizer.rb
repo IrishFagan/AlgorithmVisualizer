@@ -60,11 +60,18 @@ end
 def drawSquares()
 	i = 0
 	j = 0
+	k = 0
 	goal = [0,0]
 	start = [24,7]
 	border = [[5,5],[6,5],[7,5],[8,5],[9,5]]
 	while i <= 25
 		while j <= 25
+			if border.include? [i,j]
+				clr = [0.5,0.8,0.1,1]
+				newSquare(i,j,clr)
+				j += 1
+				next
+			end
 			if specificBlock(i,j,goal)
 				clr = [0,0.8,0.2,1]
 				newSquare(i,j,clr)
