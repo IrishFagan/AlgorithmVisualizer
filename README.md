@@ -18,7 +18,7 @@ When the path from the start to goal is caluclated then a green block is drawn f
 
 ### Adding Obstacles
 
-A left click on any of the squares will produce a border that the path cannot traverse. This is where the algorithm will have to re-calculate a path around.
+A left click on any of the squares will produce a border that the path cannot traverse. This is where the algorithm will have to calculate a new path around the obstacle.
 
 ![Example 3](https://github.com/IrishFagan/AlgorithmVisualizer/blob/master/images/Screenshot_6.png)
 
